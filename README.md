@@ -4,27 +4,27 @@
 
 ## Benshada API List
 
--Registration and login
--Product Categories
--Search/filter
--View product
--Upload product
--Create shop
--Review listing/rating
--Add to cart
--Payment
--Similar products
--Contact
--Add to wishlist
--Order confirmation
--Product tracking
--Edit product
--User profile
--Add categories
--Edit category
--Billing address
--User roles
--Permission
+- Registration and login
+- Product Categories
+- Search/filter
+- View product
+- Upload product
+- Create shop
+- Review listing/rating
+- Add to cart
+- Payment
+- Similar products
+- Contact
+- Add to wishlist
+- Order confirmation
+- Product tracking
+- Edit product
+- User profile
+- Add categories
+- Edit category
+- Billing address
+- User roles
+- Permission
 
 
 ## License
