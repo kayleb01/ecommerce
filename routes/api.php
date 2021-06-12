@@ -16,10 +16,13 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+
 
 Route::post('create/product', [ProductController::class, 'store'])->name('create.product');
 Route::post('create/media', [MediaController::class, 'store'])->name('create.media');
 Route::delete('delete/media', [MediaController::class, 'destroy'])->name('delete.media');
+
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
