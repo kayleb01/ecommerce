@@ -39,8 +39,12 @@ class ProductController extends Controller
                 'model_type' => Product::class
             ]);
         }
+        if ($product) {
+            return response()->json(['message' => 'product created successfully', 'product' => new ProductResource($product)], 201);
 
-       return response()->json(['message' => 'product created successfully', 'product' => new ProductResource($product)], 201);
+        }else {
+           return response()->json(['message' => 'An error was encountered', 500]);
+        }
     }
 
 
