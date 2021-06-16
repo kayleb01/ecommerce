@@ -33,6 +33,7 @@ Route::group(['middleware' =>'api'],function(){
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/logout', [AuthController::class, 'logout']);
+        Route::patch('/edit/{id}', [AuthController::class, 'update']);
     });
 
     Route::group(['prefix'=>'manufacturer'],
@@ -40,6 +41,7 @@ Route::group(['middleware' =>'api'],function(){
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/logout', [AuthController::class, 'logout']);
+        Route::patch('/edit/{id}', [AuthController::class, 'update']);
     });
 
     Route::group(['prefix'=>'retailer'],
@@ -47,6 +49,7 @@ Route::group(['middleware' =>'api'],function(){
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/logout', [AuthController::class, 'logout']);
+        Route::patch('/edit/{id}', [AuthController::class, 'update']);
     });
 
     Route::group(['prefix'=>'user'],
@@ -54,5 +57,6 @@ Route::group(['middleware' =>'api'],function(){
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/logout', [AuthController::class, 'logout']);
+        Route::patch('/edit/{id}', [AuthController::class, 'update']);
     });
 });

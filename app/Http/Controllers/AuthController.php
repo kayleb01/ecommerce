@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Validator;
 
@@ -31,11 +32,15 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response([
+                'message' => 'Unprocessable Entity'
+            ],422);
         }
 
         if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response([
+                'message' => 'Unauthorized'
+            ],401);
         }
 
         return $this->createNewToken($token);
@@ -53,11 +58,18 @@ class AuthController extends Controller
             'address' => 'required|string',
             'role' => 'required|string',
             'email' => 'required|string|email|max:100|unique:users',
+            'company_name' => 'string',
+            'store_name' => 'string',
+            'state' => 'string',
+            'city' => 'string',
+            'zipcode' => 'integer',
             'password' => 'required|string|min:6',
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+            return response([
+                'message' => 'Bad Request'
+            ],400);
         }
 
         $user = User::create(array_merge(
@@ -65,10 +77,9 @@ class AuthController extends Controller
                     ['password' => bcrypt($request->password)]
                 ));
 
-        return response()->json([
-            'message' => 'User successfully registered',
-            'user' => $user
-        ], 201);
+        return response([
+                'data' => new UserResource($user) 
+            ],201);
     }
 
 
@@ -80,7 +91,41 @@ class AuthController extends Controller
     public function logout() {
         auth()->logout();
 
-        return response()->json(['message' => 'User successfully signed out']);
+        return response([
+            'message' => 'User successfully signed out'
+        ],200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $auth_user = Auth::user();
+        $user = User::find($id);
+
+        // check for user access
+        if ($auth_user->id !== $user->id) {
+            return response([
+                'message' => 'Access denied'
+            ]);
+        } else {
+            $user->update($request->all());
+        };
+        return response([
+            'message' => 'Updated successfully',
+            'data' => [
+                'id' => $user->id,
+                'full_name' => $user->full_name,
+                'username' => $user->username,
+                'address' => $user->address,
+                'role' => $user->role,
+                'email' => $user->email,
+                'company_name' => $user->company_name,
+                'store_name' => $user->store_name,
+                'state' => $user->state,
+                'city' => $user->city,
+                'zipcode' => $user->zipcode,
+                'updated_at' => $user->created_at->toDateTimeString()
+            ]
+        ],201);
     }
 
 
