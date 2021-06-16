@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,3 +16,4 @@ use App\Http\Controllers\CartController;
 */
 Route::post('/add-cart', [CartController::class, 'store'])->name('add-cart');
 Route::delete('/cart/{id}/delete', [CartController::class, 'destroy']);
+Route::get('/payment', [PaymentController::class, 'payment']);
