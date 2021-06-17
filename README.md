@@ -30,6 +30,15 @@ when pushing to the repo, please create a new branch and push, the branch name s
 - Permission
 
 
+## Run your project 
+setup your 
+Database name -- benshada_api
+Database  username -- root
+Database password -- 
+
+Run php artisan migrate  to create your tables 
+
+Run php artisan serve to launch your app
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
