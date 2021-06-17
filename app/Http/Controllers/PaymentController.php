@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use KingFlamez\Rave\Facades\Rave as Flutterwave;
+
 
 class PaymentController extends Controller
 {
 
 
-    public function payment()
+    public function payment($order_id = '')
     {
         $cart = Cart::where('user_id', 1)->where('order_id', null)->get()->toArray();
         $data = [];
@@ -35,9 +37,14 @@ class PaymentController extends Controller
         }
         $data['total'] = $total;
 
-        $data['txn_ref'] = paystack()->genTranxRef();
+        $data['txn_ref']  = Flutterwave::generateReference();;
 
         return response()->json(['message' => 'Payment initiated...', 'data' => $data], 200);
 
+    }
+
+    public function finalize(Request $request)
+    {
+        //
     }
 }
