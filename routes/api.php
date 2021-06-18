@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,5 @@ use App\Http\Controllers\ProductController;
 Route::post('create/product', [ProductController::class, 'store'])->name('create.product');
 Route::post('create/media', [MediaController::class, 'store'])->name('create.media');
 Route::delete('delete/media', [MediaController::class, 'destroy'])->name('delete.media');
+Route::post('/product/review', [ProductReviewController::class, 'store']);
+Route::put('review/{id}/update', [ProductReviewController::class, 'update']);
