@@ -2,6 +2,8 @@
 use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\ProductController;
 
 
 /*
@@ -15,13 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/search', function ($id) {
-//     return product;
-// });
 
+
+Route::post('create/product', [ProductController::class, 'store'])->name('create.product');
+Route::post('create/media', [MediaController::class, 'store'])->name('create.media');
+Route::delete('delete/media', [MediaController::class, 'destroy'])->name('delete.media');
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::post('/add-category', [CategoryController::class, 'store']);
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+
