@@ -18,7 +18,8 @@ use App\Http\Controllers\ProductController;
 */
 
 
-
+Route::get('/products', [ProductController::class, 'index']);
+Route::put('/product/{product}/edit',[ProductController::class, 'update']);
 Route::post('create/product', [ProductController::class, 'store'])->name('create.product');
 Route::post('create/media', [MediaController::class, 'store'])->name('create.media');
 Route::delete('delete/media', [MediaController::class, 'destroy'])->name('delete.media');
