@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->smallInteger('status')->default(1);
-            $table->integer('price');
+            //$table->integer('price');
             $table->integer('total_stock');
             $table->integer('sold_stock')->default(0);
             $table->foreignId('category_id')->unsigned();

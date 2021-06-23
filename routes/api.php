@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShopController;
 
 
 
@@ -29,7 +30,7 @@ Route::post('create/media', [MediaController::class, 'store'])->name('create.med
 Route::delete('delete/media', [MediaController::class, 'destroy'])->name('delete.media');
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::post('/add-category', [CategoryController::class, 'store']);
-
+Route::post('/create/shop', [ShopController::class, 'store']);
 
 
 Route::group(['middleware' =>'api'],function(){

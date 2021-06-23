@@ -36,11 +36,24 @@ class ShopController extends Controller
      */
     public function store(ShopRequest $request)
     {
-        $shop = Shop::create($request->all());
-
-        return response([
-            'data' => new ShopResource($shop)
+        $shop = Shop::create([
+            'name' => $request->name,
+            'address' => $request->address,
+            'description' => $request->description,
+            'product' => $request->product
         ]);
+
+        if($shop){
+            return response([
+                'data' => new ShopResource($shop)
+            ],201);
+        }
+
+        else{
+            return response([
+                'message' => 'Bad Request'
+            ],400);
+        }
     }
 
     /**
