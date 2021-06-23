@@ -1,0 +1,9 @@
+GET http://localhost:8000/api/products
+###
+PUT http://localhost:8000/api/product/25/edit
+Accept: application/json
+{
+    "title": "an updated product title",
+    "price": 9000
+}
+
