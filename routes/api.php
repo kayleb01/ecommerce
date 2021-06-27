@@ -33,7 +33,6 @@ Route::get('/categories', [CategoryController::class, 'index']);
 Route::post('/add-category', [CategoryController::class, 'store']);
 
 
-
 Route::group(['middleware' =>'api'],function(){
     Route::group(['prefix'=>'admin'],
         function($router){
