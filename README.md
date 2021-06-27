@@ -27,6 +27,7 @@ when pushing to the repo, please create a new branch and push, the branch name s
 - Edit category
 - Billing address
 - User roles
+- Newsletter
 - Permission
 
 
