@@ -24,5 +24,5 @@ use App\Http\Controllers\ProductReviewController;
 Route::post('create/product', [ProductController::class, 'store'])->name('create.product');
 Route::post('create/media', [MediaController::class, 'store'])->name('create.media');
 Route::delete('delete/media', [MediaController::class, 'destroy'])->name('delete.media');
-Route::post('/product/review', [ProductReviewController::class, 'store']);
+Route::post('/product/review', [ProductController::class, 'review']);
 Route::post('/review/{id}/update', [ProductReviewController::class, 'update']);

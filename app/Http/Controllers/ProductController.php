@@ -6,8 +6,9 @@ use App\Models\Media;
 use App\Models\Product;
 use App\Jobs\CreateProduct;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreProductRequest;
+use App\Models\Product_review;
 use App\Http\Resources\ProductResource;
+use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
 {
@@ -54,9 +55,40 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function review(Request $request)
     {
-        //
+
+        $request->validate([
+            'rating' => 'required|numeric|min:1|max:5'
+        ]);
+
+        $product = Product::find($request->product_id);
+        // dd(!($product->isReviewed($product->id)));
+        if(!($product->isReviewed($product->id))){
+
+            $review = new Product_review();
+            $review->user_id = $request->user_id;
+            $review->rating = $request->rating;
+            $review->review = $request->review;
+            $product->product_review()->save($review);
+        }else {
+            return response()->json(['error' => 'seems like you have reviewed this product already'], 400);
+
+        }
+
+        // $product = Product::where('id', $request->product_id)->firstOrFail();
+        // $review = Product_review::create([
+        //     'product_id' => $request->product_id,
+        //     'user_id' => $request->user()->id,
+        //     'rating' => $request->rating,
+        //     'review' => $request->review
+        // ]);
+
+        if ($review) {
+           return response()->json(['message' => 'Thank you for your feedback'], 201);
+        }else{
+            return response()->json(['message' => 'An error was encountered, please try again'], 500);
+        }
     }
 
     /**

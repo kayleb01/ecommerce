@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -31,5 +32,20 @@ class Product extends Model
     public function user()
     {
        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     *
+     * A reply has many attachments i.e pictures of whatever
+     *  @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * */
+    public function product_review():MorphMany
+    {
+        return $this->morphMany(Product_review::class, 'reviewable');
+    }
+
+    public function isReviewed($id)
+    {
+       return $this->product_review()->where(['reviewable_id' => $id, 'user_id' => auth()->id()])->exists();
     }
 }
