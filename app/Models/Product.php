@@ -14,14 +14,22 @@ class Product extends Model
 
     protected $table = 'products';
 
-    protected $fillable  = ['title', 'description', 'status', 'price', 'total_stock', 'sold_stock', 'category_id', 'vendor_id', 'user_id'];
+    protected $fillable  = ['title', 'description', 'status', 'price', 'total_stock', 'sold_stock', 'category_id', 'vendor_id', 'user_id', 'slug', 'discounted_price'];
 
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::created(function ($product) {
+            $product->update(['slug' => $product->title]);
+        });
+    }
 
     //model relationships
 
     public function category()
     {
-       return $this->belongsTo(Categories::class, 'category_id');
+       return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function vendor()

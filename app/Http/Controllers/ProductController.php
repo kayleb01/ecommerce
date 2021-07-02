@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Media;
 use App\Models\Product;
-use App\Jobs\CreateProduct;
 use Illuminate\Http\Request;
 use App\Models\Product_review;
 use App\Http\Resources\ProductResource;
@@ -19,7 +18,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::with('category')->paginate(30);
+        return ProductResource::collection($products);
     }
 
     /**
@@ -30,8 +30,8 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $data = $request->only(['title', 'description', 'status', 'price', 'total_stock', 'sold_stock', 'category_id', 'vendor_id', 'user_id', 'product_image']);
-        $product = Product::create($data);
+        $data = $request->only(['title', 'description', 'status', 'price', 'total_stock', 'sold_stock', 'category_id', 'vendor_id', 'product_image', 'discounted_price']);
+        $product = Product::create(array_merge(['slug' => $request->title, 'user_id' => $request->user()->id], $data));
 
         //store media files if attached
         if ($request->hasFile('product_image')) {
@@ -98,9 +98,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        //
+        $product->update($request->all());
+        return new ProductResource($product);
     }
 
     /**
