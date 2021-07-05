@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BillingAddressController;
 
 
 
@@ -23,6 +24,7 @@ use App\Http\Controllers\CategoryController;
 */
 
 
+Route::post('add/billing-address', [BillingAddressController::class, 'store']);
 
 Route::post('/product/review', [ProductReviewController::class, 'store']);
 Route::post('/review/{id}/update', [ProductReviewController::class, 'update']);

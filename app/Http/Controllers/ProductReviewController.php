@@ -33,7 +33,7 @@ class ProductReviewController extends Controller
         // $product = Product::where('id', $request->product_id)->firstOrFail();
         $review = Product_review::create([
             'product_id' => $request->product_id,
-            'user_id' => $request->user()->id,
+            'user_id' => $request->user_id,
             'rating' => $request->rating,
             'review' => $request->review
         ]);
@@ -66,7 +66,7 @@ class ProductReviewController extends Controller
     public function update(Request $request, $id)
     {
         $review  = Product_review::where('id', $id)->first();
-        if ($review->user_id != $request->user()->id) {
+        if ($review->user_id != $request->user_id) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
