@@ -25,6 +25,7 @@ use App\Http\Controllers\BillingAddressController;
 
 
 Route::post('add/billing-address', [BillingAddressController::class, 'store']);
+Route::patch('/billing-address/{billingAddress}/edit',[BillingAddressController::class, 'update']);
 
 Route::post('/product/review', [ProductReviewController::class, 'store']);
 Route::post('/review/{id}/update', [ProductReviewController::class, 'update']);

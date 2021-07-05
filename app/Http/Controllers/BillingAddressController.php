@@ -87,11 +87,11 @@ class BillingAddressController extends Controller
      */
     public function update(BillingAddressRequest $request, BillingAddress $billingAddress)
     {
-        $billingAddress = $billingAddress->update($request->all());;
+        $billing_address = $billingAddress->update($request->all());;
 
-        if($billingAddress){
+        if($billing_address){
             return response([
-                'data' => new BillingAddressResource($billingAddress)
+                'data' => new BillingAddressResource($billing_address)
             ],201);
         }
 
