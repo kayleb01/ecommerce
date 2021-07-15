@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
@@ -43,12 +43,18 @@ class Product extends Model
        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function setSlugAttribute($value){
+    /**
+     *
+     * A reply has many attachments i.e pictures of whatever
+     *  @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * */
+    public function product_review():MorphMany
+    {
+        return $this->morphMany(Product_review::class, 'reviewable');
+    }
 
-        if (static::whereSlug($slug = Str::slug($value))->exists()) {
-                $slug = "{$slug}-{$this->id}";
-            }
-
-        $this->attributes['slug'] = $slug;
+    public function isReviewed($id)
+    {
+       return $this->product_review()->where(['reviewable_id' => $id, 'user_id' => auth()->id()])->exists();
     }
 }

@@ -27,7 +27,7 @@ use App\Http\Controllers\BillingAddressController;
 Route::post('add/billing-address', [BillingAddressController::class, 'store']);
 Route::patch('/billing-address/{billingAddress}/edit',[BillingAddressController::class, 'update']);
 
-Route::post('/product/review', [ProductReviewController::class, 'store']);
+Route::post('/product/review', [ProductController::class, 'review']);
 Route::post('/review/{id}/update', [ProductReviewController::class, 'update']);
 
 Route::get('/products', [ProductController::class, 'index']);
@@ -35,10 +35,21 @@ Route::put('/product/{product}/edit',[ProductController::class, 'update']);
 Route::post('create/product', [ProductController::class, 'store'])->name('create.product');
 Route::post('create/media', [MediaController::class, 'store'])->name('create.media');
 Route::delete('delete/media', [MediaController::class, 'destroy'])->name('delete.media');
+
+// List all your categories
 Route::get('/categories', [CategoryController::class, 'index']);
+//Create your Category
 Route::post('/add-category', [CategoryController::class, 'store']);
+//View Each category details
+Route::get('/view-category/{category}', [CategoryController::class, 'show']);
 
 
+
+//Search for category
+Route::get('/search-category/{name}', [CategoryController::class, 'search']);
+
+//Search for likely product
+Route::get('/{name}', [ProductController::class, 'search']);
 
 Route::group(['middleware' =>'api'],function(){
     Route::group(['prefix'=>'admin'],
@@ -47,6 +58,9 @@ Route::group(['middleware' =>'api'],function(){
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::patch('/edit/{id}', [AuthController::class, 'update']);
+
+        //Delete the category
+        Route::delete('/delete-category/{category}', [CategoryController::class, 'delete']);
     });
 
     Route::group(['prefix'=>'manufacturer'],
@@ -73,4 +87,3 @@ Route::group(['middleware' =>'api'],function(){
         Route::patch('/edit/{id}', [AuthController::class, 'update']);
     });
 });
-

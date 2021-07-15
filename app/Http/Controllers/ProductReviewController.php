@@ -26,6 +26,7 @@ class ProductReviewController extends Controller
      */
     public function store(Request $request)
     {
+        //
         $request->validate([
             'rating' => 'required|numeric|min:1|max:5'
         ]);
