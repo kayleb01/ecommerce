@@ -2,11 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductReviewController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BillingAddressController;
+
 
 
 
@@ -22,6 +24,11 @@ use App\Http\Controllers\ProductReviewController;
 */
 
 
+Route::post('add/billing-address', [BillingAddressController::class, 'store']);
+Route::patch('/billing-address/{billingAddress}/edit',[BillingAddressController::class, 'update']);
+
+Route::post('/product/review', [ProductReviewController::class, 'store']);
+Route::post('/review/{id}/update', [ProductReviewController::class, 'update']);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::put('/product/{product}/edit',[ProductController::class, 'update']);

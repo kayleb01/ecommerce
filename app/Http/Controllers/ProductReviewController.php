@@ -27,6 +27,23 @@ class ProductReviewController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'rating' => 'required|numeric|min:1|max:5'
+        ]);
+
+        // $product = Product::where('id', $request->product_id)->firstOrFail();
+        $review = Product_review::create([
+            'product_id' => $request->product_id,
+            'user_id' => $request->user_id,
+            'rating' => $request->rating,
+            'review' => $request->review
+        ]);
+
+        if ($review) {
+           return response()->json(['message' => 'Thank you for your feedback'], 201);
+        }else{
+            return response()->json(['message' => 'An error was encountered, please try again'], 500);
+        }
     }
 
     /**
@@ -50,7 +67,7 @@ class ProductReviewController extends Controller
     public function update(Request $request, $id)
     {
         $review  = Product_review::where('id', $id)->first();
-        if ($review->user_id != $request->user()->id) {
+        if ($review->user_id != $request->user_id) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
