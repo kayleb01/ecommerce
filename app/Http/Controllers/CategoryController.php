@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\CategoryController;
+namespace App\Http\Controllers;
+
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         //view all category
-        return "Product";
+        return Category::all();
     }
 
     /**
@@ -42,7 +43,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        return Category::find($id);
     }
 
     /**
@@ -54,7 +55,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+        $category->update($request->all());
+        return $category;
     }
 
     /**
@@ -65,6 +68,17 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+       return  Category::destroy($id);
+    }
+
+      /**
+     * Search the specified product.
+     *
+     * @param  str  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function search($name)
+    {
+       return  Category::where('category_name', 'like', '%'.$name.'%')->get();
     }
 }

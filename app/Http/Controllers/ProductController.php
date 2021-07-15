@@ -66,11 +66,10 @@ class ProductController extends Controller
         ]);
 
         $product = Product::find($request->product_id);
-        // dd(!($product->isReviewed($product->id)));
         if(!($product->isReviewed($product->id))){
 
             $review = new Product_review();
-            $review->user_id = $request->user_id;
+            $review->user_id = $request->user()->id;
             $review->rating = $request->rating;
             $review->review = $request->review;
             $product->product_review()->save($review);
@@ -78,14 +77,6 @@ class ProductController extends Controller
             return response()->json(['error' => 'seems like you have reviewed this product already'], 400);
 
         }
-
-        // $product = Product::where('id', $request->product_id)->firstOrFail();
-        // $review = Product_review::create([
-        //     'product_id' => $request->product_id,
-        //     'user_id' => $request->user()->id,
-        //     'rating' => $request->rating,
-        //     'review' => $request->review
-        // ]);
 
         if ($review) {
            return response()->json(['message' => 'Thank you for your feedback'], 201);
@@ -117,5 +108,16 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+      /**
+     * Search the specified product.
+     *
+     * @param  str  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function search($name)
+    {
+       return  Product::where('title', 'like', '%'.$name.'%')->get();
     }
 }
