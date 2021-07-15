@@ -1,7 +1,10 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductReviewController;
@@ -22,6 +25,16 @@ use App\Http\Controllers\BillingAddressController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+
+Route::post('/add-cart', [CartController::class, 'store'])->name('add-cart');
+Route::delete('/cart/{id}/delete', [CartController::class, 'destroy']);
+Route::get('/payment', [PaymentController::class, 'payment']);
+
+
+// Route::get('/search', function ($id) {
+//     return product;
+// });
 
 
 Route::post('add/billing-address', [BillingAddressController::class, 'store']);
