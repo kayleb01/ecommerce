@@ -62,7 +62,7 @@ class AuthController extends Controller
             'store_name' => 'string',
             'state' => 'string',
             'city' => 'string',
-            'zipcode' => 'integer',
+            'zipcode' => 'numeric',
             'password' => 'required|string|min:6',
         ]);
 
