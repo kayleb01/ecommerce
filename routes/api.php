@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillingAddressController;
@@ -53,10 +54,9 @@ Route::delete('delete/media', [MediaController::class, 'destroy'])->name('delete
 Route::get('/categories', [CategoryController::class, 'index']);
 //Create your Category
 Route::post('/add-category', [CategoryController::class, 'store']);
+Route::post('/create/shop', [ShopController::class, 'store']);
 //View Each category details
 Route::get('/view-category/{category}', [CategoryController::class, 'show']);
-
-
 
 //Search for category
 Route::get('/search-category/{name}', [CategoryController::class, 'search']);

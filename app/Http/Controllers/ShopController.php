@@ -39,8 +39,8 @@ class ShopController extends Controller
         $shop = Shop::create($request->all());
 
         return response([
-            'data' => new ShopResource($shop)
-        ]);
+                'data' => new ShopResource($shop)
+            ],201);
     }
 
     /**
