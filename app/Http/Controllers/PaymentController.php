@@ -14,7 +14,7 @@ class PaymentController extends Controller
 
     public function payment($order_id = '')
     {
-        $cart = Cart::where('user_id', 1)->where('order_id', null)->get()->toArray();
+        $cart = Cart::where('user_id', auth()->id())->where('order_id', null)->get()->toArray();
         $data = [];
 
         $data['items'] = array_map(function($item) use($cart){
