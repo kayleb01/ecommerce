@@ -17,7 +17,7 @@ class Media extends Model
 
     public function model():MorphTo
     {
-        return $this->morphTo();
+        return $this->morphTo(); 
     }
 
     public function getImageUrlAttribute()

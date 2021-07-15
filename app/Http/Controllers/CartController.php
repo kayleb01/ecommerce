@@ -31,7 +31,7 @@ class CartController extends Controller
     {
 
         //Check if we have the product in cart if true, increment add the quantity
-        $cart_items = Cart::where('user_id', $request->user()->id)
+        $cart_items = Cart::where('user_id', $request->user_id)
                         ->where('product_id', $request->product_id)->first();
 
         if (!empty($cart_items)) {
@@ -61,7 +61,7 @@ class CartController extends Controller
                 'product_id' => $request->product_id,
                 'order_id' => null,
                 'quantity' => $request->quantity,
-                'user_id' => $request->user()->id,
+                'user_id' => $request->user_id,
                 'price' => $request->price,
                 'total' => $request->total
             ]);
