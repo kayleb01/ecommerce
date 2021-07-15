@@ -20,6 +20,7 @@ class CartResource extends JsonResource
             'price' => number_format($this->price / 100, 2, '.', ','),
             'total' => number_format($this->total / 100, 2, '.', ','),
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
+             'product' => $this->product
 
         ];
     }

@@ -10,6 +10,7 @@ class Cart extends Model
     use HasFactory;
 
     protected $table = 'carts';
+    protected $with = ['product'];
     protected $fillable = ['product_id', 'order_id', 'quantity', 'status', 'user_id', 'price', 'total'];
 
     //Model relationships

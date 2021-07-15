@@ -61,7 +61,7 @@ class CartController extends Controller
                 'product_id' => $request->product_id,
                 'order_id' => null,
                 'quantity' => $request->quantity,
-                'user_id' => $request->user()->id,
+                'user_id' => $request->user_id,
                 'price' => $request->price,
                 'total' => $request->total
             ]);
