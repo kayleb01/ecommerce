@@ -46,10 +46,7 @@ class CartController extends Controller
 
                 $cart_items->save();
                 return response()->json(['message' => "Product added to cart", 'cart' => new CartResource($cart_items)], 201);
-
             }
-
-
 
         }else {
 
@@ -72,11 +69,8 @@ class CartController extends Controller
             }else {
                 # return an error
                 return response()->json(['message' => "An error was encountered, please try again"], 500);
-
             }
-
         }
-
     }
 
 
@@ -90,7 +84,6 @@ class CartController extends Controller
             return true;
         }
     }
-
     /**
      * Display the specified resource.
      *
