@@ -6,6 +6,9 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use KingFlamez\Rave\Facades\Rave as Flutterwave;
+use App\Mail\OrderConfirmed;
+use Illuminate\Support\Facades\Auth;
+use Mail;
 
 
 class PaymentController extends Controller
@@ -37,7 +40,9 @@ class PaymentController extends Controller
         }
         $data['total'] = $total;
 
-        $data['txn_ref']  = Flutterwave::generateReference();;
+        $data['txn_ref']  = Flutterwave::generateReference();
+
+        Mail::to(Auth::user())->send(new OrderConfirmed($data['invoice_id']));
 
         return response()->json(['message' => 'Payment initiated...', 'data' => $data], 200);
 
