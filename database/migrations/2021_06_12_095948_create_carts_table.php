@@ -16,10 +16,10 @@ class CreateCartsTable extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->unsigned();
-            $table->foreignId('order_id')->unsigned()->nullable();
             $table->integer('quantity')->default(1);
-            $table->enum('status', ['new', 'progress', 'delivered'])->default('new');
+            $table->smallInteger('status')->unsigned()->default(1);
             $table->foreignId('user_id')->unsigned()->nullable();
+            $table->double("shipping_fee")->default(0);
             $table->double('price');
             $table->double('total');
             $table->timestamps();

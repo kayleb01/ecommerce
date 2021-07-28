@@ -12,9 +12,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillingAddressController;
-
-
-
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,3 +98,9 @@ Route::group(['middleware' =>'api'],function(){
         Route::patch('/edit/{id}', [AuthController::class, 'update']);
     });
 });
+
+/**
+ * Orders routes
+ */
+Route::get('/create/orders', [OrderController::class, 'store']);
+Route::get('/user/order', [OrderController::class, 'index']);

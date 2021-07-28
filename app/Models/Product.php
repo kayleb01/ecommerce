@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
@@ -16,7 +17,7 @@ class Product extends Model
     protected $table = 'products';
 
 
-    protected $fillable  = ['title', 'description', 'status', 'price', 'total_stock', 'sold_stock', 'category_id', 'vendor_id', 'user_id', 'slug', 'discounted_price'];
+    protected $fillable  = ['shop_id', 'title', 'description', 'status', 'price', 'total_stock', 'sold_stock', 'category_id', 'vendor_id', 'user_id', 'slug', 'discounted_price'];
 
 
     protected static function boot()
@@ -34,9 +35,9 @@ class Product extends Model
 
     }
 
-    public function vendor()
+    public function shop()
     {
-        return $this->hasOne(Vendor::class, 'vendor_id');
+        return $this->belongsTo(Shop::class, 'shop_id');
     }
 
     public function user()
@@ -58,4 +59,13 @@ class Product extends Model
     {
        return $this->product_review()->where(['reviewable_id' => $id, 'user_id' => auth()->id()])->exists();
     }
+
+    public function order():BelongsToMany
+    {
+        return $this->belongsToMany(Order::class)->withTimestamps();
+    }
+
+    function different_shops($array) {
+        return count($array) !== count(array_unique($array));
+     }
 }

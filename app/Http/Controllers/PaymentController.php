@@ -32,20 +32,17 @@ class PaymentController extends Controller
 
         $data['invoice_id'] = 'ORD-'.strtoupper(uniqid());
         $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
-
         $total = 0;
 
         foreach($data['items'] as $item){
             $total += $item['price'] * $item['quantity'];
         }
         $data['total'] = $total;
-
         $data['txn_ref']  = Flutterwave::generateReference();
 
         Mail::to(Auth::user())->send(new OrderConfirmed($data['invoice_id']));
 
         return response()->json(['message' => 'Payment initiated...', 'data' => $data], 200);
-
     }
 
     public function finalize(Request $request)
