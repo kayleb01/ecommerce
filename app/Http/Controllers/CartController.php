@@ -77,7 +77,7 @@ class CartController extends Controller
     public function check_stock($product, $quantity):bool
     {
         $product = Product::findOrFail($product);
-        $available_stock = $product->total_stock - $product->sold_stock;
+        $available_stock = $product->total_stock;
         if($available_stock < $quantity || $available_stock == 0) {
             return false;
         }else{

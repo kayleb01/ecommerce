@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillingAddressController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TrackingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,34 +26,39 @@ use App\Http\Controllers\OrderController;
 |
 */
 
+//  ------------------ Authorised Only Access Route ------------------------ //
+Route::middleware('auth:api')->prefix('v1')->group(function () {
+    Route::get("/tracking/{order}", [TrackingController::class, 'index']);
+    Route::post('/update/tracking', [TrackingController::class, 'update']);
+    Route::post('/add-cart', [CartController::class, 'store'])->name('add-cart');
+    Route::delete('/cart/{id}/delete', [CartController::class, 'destroy']);
+    Route::get('/payment', [PaymentController::class, 'payment']);
 
-Route::post('/add-cart', [CartController::class, 'store'])->name('add-cart');
-Route::delete('/cart/{id}/delete', [CartController::class, 'destroy']);
-Route::get('/payment', [PaymentController::class, 'payment']);
+    //Orders routes
+    Route::post('/create/orders', [OrderController::class, 'store']);
+    Route::get('/user/order', [OrderController::class, 'index']);
 
+    //Billing address
+    Route::post('add/billing-address', [BillingAddressController::class, 'store']);
+    Route::patch('/billing-address/{billingAddress}/edit',[BillingAddressController::class, 'update']);
 
-// Route::get('/search', function ($id) {
-//     return product;
-// });
+    //Product Or shop review
+    Route::post('/product/review', [ProductController::class, 'review']);
+    Route::post('/review/{id}/update', [ProductReviewController::class, 'update']);
 
-
-Route::post('add/billing-address', [BillingAddressController::class, 'store']);
-Route::patch('/billing-address/{billingAddress}/edit',[BillingAddressController::class, 'update']);
-
-Route::post('/product/review', [ProductController::class, 'review']);
-Route::post('/review/{id}/update', [ProductReviewController::class, 'update']);
-
-Route::get('/products', [ProductController::class, 'index']);
-Route::put('/product/{product}/edit',[ProductController::class, 'update']);
-Route::post('create/product', [ProductController::class, 'store'])->name('create.product');
-Route::post('create/media', [MediaController::class, 'store'])->name('create.media');
-Route::delete('delete/media', [MediaController::class, 'destroy'])->name('delete.media');
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::put('/product/{product}/edit',[ProductController::class, 'update']);
+    Route::post('create/product', [ProductController::class, 'store'])->name('create.product');
+    Route::post('create/media', [MediaController::class, 'store'])->name('create.media');
+    Route::delete('delete/media', [MediaController::class, 'destroy'])->name('delete.media');
+        //Create your Category
+    Route::post('/add-category', [CategoryController::class, 'store']);
+    Route::post('/create/shop', [ShopController::class, 'store']);
+});
 
 // List all your categories
 Route::get('/categories', [CategoryController::class, 'index']);
-//Create your Category
-Route::post('/add-category', [CategoryController::class, 'store']);
-Route::post('/create/shop', [ShopController::class, 'store']);
+
 //View Each category details
 Route::get('/view-category/{category}', [CategoryController::class, 'show']);
 
@@ -99,8 +105,3 @@ Route::group(['middleware' =>'api'],function(){
     });
 });
 
-/**
- * Orders routes
- */
-Route::get('/create/orders', [OrderController::class, 'store']);
-Route::get('/user/order', [OrderController::class, 'index']);

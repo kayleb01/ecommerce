@@ -24,7 +24,6 @@ class OrderController extends Controller
         }else {
             return response()->json(['message' => 'Error fetching user orders'], 500);
         }
-
     }
 
     /**
@@ -35,23 +34,24 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $cart = Cart::where('user_id', 1)->get();
+        $cart = Cart::where('user_id', auth()->id())->get();
         if (count($cart) <= 0) {
             return response()->json(['message' => 'Cart is empty'], 404);
         }
         $products = Product::with('shop')->select('id', 'total_stock', 'shop_id')
             ->whereIn('id', $cart->pluck('product_id'))
             ->get()->toArray();
-        $order_number = str_pad($products[0]['id'] + 1, 12, "0", STR_PAD_LEFT) * time();
 
         for($i = 0; $i < count($cart); $i++) {
+
             if(!isset($products[$i]['id']) || $products[$i]['total_stock'] < $cart[$i]->quantity){
                  return response()->json(['message' => 'product '. $cart[$i]->product->title .' is not available'], 500);
             }
             try {
-              DB::transaction(function () use($cart, $i, $order_number){
+              DB::transaction(function () use($cart, $i, $products){
+                $order_number = str_pad($products[$i]['id'] + 1, 12, "0", STR_PAD_LEFT) * time();
                 $orders = Order::create([
-                    'user_id' => 1,
+                    'user_id' => auth()->id(),
                     'quantity' => $cart[$i]->quantity,
                     'total' => $cart[$i]->quantity * $cart[$i]->price,
                     'price' => $cart[$i]->price,
@@ -59,27 +59,33 @@ class OrderController extends Controller
                     'order_number' => $order_number,
                     'payment_status' => 'paid'
                 ]);
-
                 $orders->product()->attach([
                     $cart[$i]->product_id,
                     $orders->id
                 ]);
+                $orders->tracking()->create([
+                    'user_id' => auth()->id(),
+                    'order_number' => $orders->order_number,
+                    'order_id' => $orders->id,
+                    'product_id' => $cart[$i]->product_id,
+                    'destination' => request('destination')
+                    ]);
 
                 //decrement the product total stock and increment the sold stock by the cart quantity
-                    $product = Product::find($cart[$i]->product_id);
-                    $product->decrement('total_stock', $cart[$i]->quantity);
-                    $product->increment('sold_stock', $cart[$i]->quantity);
+                $product = Product::find($cart[$i]->product_id);
+                $product->decrement('total_stock', $cart[$i]->quantity);
+                $product->increment('sold_stock', $cart[$i]->quantity);
             });
             } catch (\Exception $ex) {
-                return response()->json(['message' => 'An error occured, please try again or contact the admin'], 500);
+                return response()->json(['message' => 'An error occured, please try again or contact the admin'.$ex], 500);
             }
-
         }
         //delete the entire user cart
         $del = $cart->each->delete();
         if ($del) {
-            $order = Order::where('user_id', 1)->get();
-            return response()->json(['message' => 'order created', 'order' => $order], 200);
+            $order = Order::with('product')->where('user_id', auth()->id())->get();
+
+            return response()->json($order, 201);
         }else {
             return response()->json(['message' => 'An error occured, please try again or contact the admin'], 500);
         }

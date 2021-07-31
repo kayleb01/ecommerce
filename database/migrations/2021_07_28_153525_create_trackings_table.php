@@ -16,10 +16,12 @@ class CreateTrackingsTable extends Migration
         Schema::create('trackings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->foreignId('product_id');
             $table->foreignId('order_id');
-            $table->string('origin');
-            $table->json('points');
-            $table->string('destination');
+            $table->string('order_number');
+            $table->json('points')->nullable();
+            $table->enum('status', ['order placed', 'order in progress', 'shipped', 'out for delivery', 'delivered', 'cancel'])->default('order placed');
+            $table->string('destination')->nullable();
             $table->timestamps();
         });
     }
